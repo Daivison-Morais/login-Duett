@@ -3,14 +3,13 @@ import Login from "./components/login/Login.jsx";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import SignUp from "./components/signup/SignUp.jsx";
 import Home from "./components/home/Home.jsx";
-import RecoverPassword from "./components/recoverPassword/RecoverPassword.jsx";
 import ListUsers from "./components/listUsers/ListUsers.jsx";
 import { useState } from "react";
 import UserContext from "./services/UserContext.js";
+import ChangePassword from "./components/changePassword/ChangePassword.jsx";
 
 function App() {
   const [user, setUser] = useState("");
-  const [token, setToken] = useState(localStorage.getItem("newTR"));
 
   return (
     <>
@@ -19,8 +18,6 @@ function App() {
           value={{
             user,
             setUser,
-            token,
-            setToken,
           }}
         >
           <Routes>
@@ -28,8 +25,8 @@ function App() {
             <Route path="/SignUp" element={<SignUp />}></Route>
             <Route path="/Home" element={<Home />}></Route>
             <Route
-              path="/RecoverPassword"
-              element={<RecoverPassword />}
+              path="/ChangePassword"
+              element={<ChangePassword />}
             ></Route>
             <Route path="/ListUsers" element={<ListUsers />}></Route>
           </Routes>

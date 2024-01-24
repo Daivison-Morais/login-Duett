@@ -25,10 +25,10 @@ export const LoadSimboll = styled.div`
       transform: rotate(360deg);
     }
   }
-  width: ${({size})=> size ? size : "20px"};
-  height: ${({size})=> size ? size : "20px"};
+  width: ${({size})=> size ? size : "18px"};
+  height: ${({size})=> size ? size : "18px"};
   border: 5px solid;
-  border-color: #e6e6e6 #8c11be #8c11be;
+  border-color: #e6e6e6 #4cb89e #4cb89e;
   border-radius: 50%;
   animation: spin 1s linear infinite;
 `;

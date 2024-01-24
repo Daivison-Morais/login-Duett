@@ -8,13 +8,12 @@ import {
   Button,
   BoxInput,
 } from "../login/Login";
-import styled from "styled-components";
 import { useMutation } from "react-query";
-import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
 import notify from "../../services/cardNotify.js";
 import LoadSimbol from "../common/LoadSimbol";
 import BASE_URL from "../../services/baseUrl.js";
 import { cpf as isCpf } from "cpf-cnpj-validator";
+import eyeView from "../login/eyeView.jsx";
 
 export default function SignUp() {
   const [email, setEmail] = useState("");
@@ -61,9 +60,9 @@ export default function SignUp() {
       return notify("Senha deve ter mais que 6 caracteres");
     }
 
-    if (role !== "admin" && role !== "user") {
+    if (role !== "ADMIN" && role !== "USER") {
       setDisabledButton(false);
-      return notify("Função deve ser 'user' ou 'admin'");
+      return notify("Função deve ser 'ADMIN' ou 'USER'");
     }
 
     const body = {
@@ -73,43 +72,8 @@ export default function SignUp() {
       role: role.toUpperCase(),
       password,
     };
-    console.log(body);
 
     mutation.mutate({ BASE_URL: BASE_URL, body: body });
-  }
-
-  function eyeReturn(eye, setEye) {
-    return eye ? (
-      <AiOutlineEyeInvisible
-        onClick={() => {
-          setEye(!eye);
-        }}
-        style={{
-          position: "absolute",
-          top: "37%",
-          right: "13px",
-          width: "24px",
-          height: "24px",
-          color: "#898989",
-          cursor: "pointer",
-        }}
-      />
-    ) : (
-      <AiOutlineEye
-        onClick={() => {
-          setEye(!eye);
-        }}
-        style={{
-          position: "absolute",
-          top: "37%",
-          right: "13px",
-          width: "24px",
-          height: "24px",
-          color: "#898989",
-          cursor: "pointer",
-        }}
-      />
-    );
   }
 
   return (
@@ -149,14 +113,13 @@ export default function SignUp() {
 
           <BoxInput>
             <Input
-              placeholder="Função (user ou admin"
+              placeholder="Perfil (USER ou ADMIN)"
               type="text"
               onChange={(event) => setRole(event.target.value)}
               value={role}
               required
             ></Input>
           </BoxInput>
-
           <BoxInput>
             <Input
               placeholder="Senha"
@@ -165,7 +128,7 @@ export default function SignUp() {
               value={password}
               required
             ></Input>
-            {eyeReturn(eyePass, setEyePass)}
+            {eyeView(eyePass, setEyePass)}
           </BoxInput>
           <Button disabled={disabledButton} type="submit">
             {disabledButton ? <LoadSimbol /> : "Cadastrar"}
@@ -178,7 +141,3 @@ export default function SignUp() {
     </>
   );
 }
-
-export const Foto = styled(Button)`
-  cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
-`;
