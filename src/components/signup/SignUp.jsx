@@ -1,6 +1,5 @@
-//import axios from "axios";
+import axios from "axios";
 import { useState } from "react";
-//import BASE_URL from "./services";
 import { useNavigate } from "react-router-dom";
 import {
   Container,
@@ -10,27 +9,30 @@ import {
   BoxInput,
 } from "../login/Login";
 import styled from "styled-components";
-//import { useMutation } from "react-query";
+import { useMutation } from "react-query";
 import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
-//import notify from "./cardNotify";
+import notify from "../../services/cardNotify.js";
 import LoadSimbol from "../common/LoadSimbol";
+import BASE_URL from "../../services/baseUrl.js";
+import { cpf as isCpf } from "cpf-cnpj-validator";
 
 export default function SignUp() {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [cpf, setCpf] = useState("");
+  const [role, setRole] = useState("");
   const [password, setSenha] = useState("");
   const [disabledButton, setDisabledButton] = useState(false);
   const [eyePass, setEyePass] = useState(false);
 
   const navigate = useNavigate();
 
-  /*   const mutation = useMutation({
+  const mutation = useMutation({
     mutationFn: ({ BASE_URL, body }) => {
       return axios
-        .post(`${BASE_URL}/sign-up`, body)
+        .post(`${BASE_URL}/signup`, body)
         .then(() => {
-          notify("Cadastro realizado!");
+          notify("Cadastro realizado com sucesso!");
           setDisabledButton(false);
           navigate("/");
         })
@@ -42,32 +44,38 @@ export default function SignUp() {
           notify(error.response.data.error);
         });
     },
-  }); */
+  });
 
   function handleForm(event) {
     event.preventDefault();
 
     setDisabledButton(true);
 
-    if (password !== setCpf) {
+    if (!isCpf.isValid(cpf)) {
       setDisabledButton(false);
-      //return notify("Senhas não conferem!");
+      return notify("CPF inválido!");
     }
 
-    if (password.length < 6 || setCpf.length < 6) {
+    if (password.length < 6) {
       setDisabledButton(false);
-      // return notify("Senha deve ter mais que 6 caracteres");
+      return notify("Senha deve ter mais que 6 caracteres");
+    }
+
+    if (role !== "admin" && role !== "user") {
+      setDisabledButton(false);
+      return notify("Função deve ser 'user' ou 'admin'");
     }
 
     const body = {
       name,
       email,
-      setCpf,
+      cpf,
+      role: role.toUpperCase(),
       password,
     };
     console.log(body);
 
-    //mutation.mutate({ BASE_URL: BASE_URL, body: body });
+    mutation.mutate({ BASE_URL: BASE_URL, body: body });
   }
 
   function eyeReturn(eye, setEye) {
@@ -135,6 +143,16 @@ export default function SignUp() {
               type="number"
               onChange={(event) => setCpf(event.target.value)}
               value={cpf}
+              required
+            ></Input>
+          </BoxInput>
+
+          <BoxInput>
+            <Input
+              placeholder="Função (user ou admin"
+              type="text"
+              onChange={(event) => setRole(event.target.value)}
+              value={role}
               required
             ></Input>
           </BoxInput>

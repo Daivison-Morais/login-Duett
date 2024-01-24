@@ -1,17 +1,44 @@
-import styled from "styled-components";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import styled from "styled-components";
+import { useMutation } from "react-query";
 import LoadSimbol from "../common/LoadSimbol.jsx";
 import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
-
-//import notify from "./cardNotify";
+import notify from "../../services/cardNotify.js";
+import UserContext from "../../services/UserContext.js";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [disabledButton, setDisabledButton] = useState(false);
   const [password, setPassword] = useState("");
   const [eye, setEye] = useState(false);
+  const { setToken, setUser } = useContext(UserContext);
   const navigate = useNavigate();
+
+  const BASE_URL = "http://localhost:8080/api"
+
+  const mutation = useMutation({
+  mutationFn: async ({ body }) => {
+    return await axios
+      .post(`${BASE_URL}/login`, body)
+      .then((response) => {
+        console.log("O RESPONSE: ", response.data)
+        setToken(response.data.token);
+        setUser(response.data);
+        setDisabledButton(false);
+        navigate("/Home");
+      })
+      .catch((error) => {
+        setDisabledButton(false);
+        if (error.response.data === undefined) {
+          return notify("Tente novamnete mais tarde.");
+        }
+        console.log(error)
+        notify(error.response.data.error);
+      });
+  },
+});
 
   function handleForm(event) {
     event.preventDefault();
@@ -21,9 +48,10 @@ export default function Login() {
       password: password,
     };
 
-    console.log(body);
-    navigate("/Home")
     setDisabledButton(true);
+
+    mutation.mutate({ BASE_URL: BASE_URL, body: body });
+
   }
 
   function eyeReturn(eye) {
@@ -86,9 +114,6 @@ export default function Login() {
             ></Input>
             {eyeReturn(eye)}
           </BoxInput>
-          <RecoverPassword onClick={() => navigate("/RecoverPassword")}>
-            Recuperar senha
-          </RecoverPassword>
           <Button disabled={disabledButton} type="submit">
             {disabledButton ? <LoadSimbol /> : "Entrar"}
           </Button>
@@ -173,10 +198,7 @@ export const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  display: flex;
-  width: 100%;
-  height: 100%;
-  justify-content: center;
-  align-items: center;
+  width: 100vw;
+  height: 100vh;
   flex-direction: column;
 `;
