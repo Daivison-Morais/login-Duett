@@ -25,8 +25,8 @@ export const LoadSimboll = styled.div`
       transform: rotate(360deg);
     }
   }
-  width: ${({size})=> size ? size : "18px"};
-  height: ${({size})=> size ? size : "18px"};
+  width: ${({size})=> size ? size : "22px"};
+  height: ${({size})=> size ? size : "22px"};
   border: 5px solid;
   border-color: #e6e6e6 #4cb89e #4cb89e;
   border-radius: 50%;
