@@ -4,6 +4,15 @@ Este app permite controlar registros de usuários no qual, apenas usuários com 
 ## Deploy
 https://login-duett.vercel.app/
 
+<br/>
+<div style="style="display: flex; height: 600px; justify-content: center; gap: 20px;" >
+  <img src="src/assets/mobile1.png" style="width: 300px" alt="Imagem 1" style="margin: 10px; ">
+  <img src="src/assets/mobile2.png" style="width: 300px" alt="Imagem 2">
+  <img src="src/assets/mobile3.png" style="width: 48%" alt="Imagem 3">
+  <img src="src/assets/mobile4.png" style="width: 48%" alt="Imagem 4">
+</div>
+
+
 ## Back-end
 https://github.com/Daivison-Morais/apiLogin-Duett
 
