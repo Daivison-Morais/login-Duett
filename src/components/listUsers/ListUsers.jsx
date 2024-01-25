@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useNavigate,  } from "react-router-dom";
 import { UserMinus } from "lucide-react";
 import { ChevronLeft } from "lucide-react";
-import { Center, Container, Header } from "../home/Home";
+import { Center, Container, Header, Text } from "../home/Home";
 import UserContext from "../../services/UserContext";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import axios from "axios";
@@ -59,7 +59,7 @@ export default function ListUsers() {
   });
 
 
-  if (isLoading) return <><Center><LoadSimbol /></Center></>;
+  if (isLoading) return <><Center><Text><LoadSimbol /></Text></Center></>;
   return (
     <>
       <Container>
@@ -100,8 +100,8 @@ export default function ListUsers() {
             );
           })
         ) : (
-          <Center className="centraliza">
-            <div className="txtInf">Não há usuários cadastrados</div>
+          <Center>
+            <Text>Não há usuários cadastrados</Text>
           </Center>
         )}
       </Container>
